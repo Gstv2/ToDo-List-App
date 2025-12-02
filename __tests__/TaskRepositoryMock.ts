@@ -1,44 +1,55 @@
-// __tests__/TaskRepositoryMock.js
+// __tests__/TaskRepositoryMock.ts
 
 import { createTask } from '../src/models/Task';
 
 export class TaskRepositoryMock {
+    tasks: any[]; // Use 'any' ou a interface Task (TaskProtocol) se estiver definida
+
     constructor(initialTasks = []) {
         this.tasks = [...initialTasks];
     }
 
+    // 🚨 CORRIGIDO: Tornando getTasks assíncrono explicitamente
     async getTasks() {
-        return this.tasks;
+        return Promise.resolve(this.tasks);
     }
 
-    async addTask(task) {
+    // 🚨 CORRIGIDO: Tornando addTask assíncrono explicitamente
+    async addTask(task: { title: string, description: string }) {
         const newTask = {
             ...task,
-            id: Date.now().toString(),
+            // Simulação de criação de ID, como no seu código original
+            id: Date.now().toString() + Math.random().toString(36).substring(2, 9), 
             completed: false
         };
         this.tasks.push(newTask);
-        return newTask;
+        return Promise.resolve(newTask);
     }
 
-    async deleteTask(id) {
+    // 🚨 CORRIGIDO: Tornando deleteTask assíncrono explicitamente
+    async deleteTask(id: string) {
         this.tasks = this.tasks.filter(task => task.id !== id);
+        return Promise.resolve(undefined);
     }
 
-    async toggleTaskCompletion(id) {
+    // 🚨 CORRIGIDO: Tornando toggleTaskCompletion assíncrono explicitamente
+    async toggleTaskCompletion(id: string) {
         const task = this.tasks.find(t => t.id === id);
         if (task) {
             task.completed = !task.completed;
         }
-        return task;
+        return Promise.resolve(task);
     }
 
-    getTaskById(id) {
+    // 🚨 CORRIGIDO: Tornando getTaskById assíncrono explicitamente (se necessário, 
+    // mas se o ViewModel busca do estado local após o load, pode ser síncrono.
+    // Manterei síncrono para corresponder à sua lógica original no ViewModel.)
+    getTaskById(id: string) {
         return this.tasks.find(task => task.id === id);
     }
 }
 
-// Teste para o mock
+// Teste para o mock (mantido)
 describe('TaskRepositoryMock', () => {
     it('should initialize with tasks', () => {
         const task = createTask('Test', 'Description', false);

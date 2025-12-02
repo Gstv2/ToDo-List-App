@@ -2,11 +2,10 @@
 
 import { Task } from '../models/Task';
 
-// O ViewModel depende DESTA interface.
 export interface TaskRepositoryProtocol {
-    getTasks(): Task[];
-    addTask(task: Omit<Task, 'id' | 'completed'>): Task; // Recebe dados brutos da UI
-    deleteTask(id: string): boolean;
-    toggleTaskCompletion(id: string): boolean;
-    getTaskById(id: string): Task | undefined;
+    getTasks(): Promise<Task[]>;
+    addTask(task: Omit<Task, 'id' | 'completed'>): Promise<Task>; 
+    deleteTask(id: string): Promise<boolean>;
+    toggleTaskCompletion(id: string): Promise<boolean>;
+    getTaskById(id: string): Task | undefined; 
 }

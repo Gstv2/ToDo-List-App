@@ -35,7 +35,7 @@ export default function AppNavigator({ listProps, createProps, detailsProps }: A
         headerTitleStyle: { fontWeight: 'bold' },
       }}
     >
-      <Stack.Screen name="ListScreen" options={{ title: 'TO-DO LIST' }}>
+      <Stack.Screen name="ListScreen" options={{ title: 'TO-DO LIST', headerShown: false }}>
         {(props) => <ListScreen {...props} {...listProps} />}
       </Stack.Screen>
 
