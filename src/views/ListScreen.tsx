@@ -5,42 +5,46 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { Task } from '../models/Task';
 
-// Tipagem para as props esperadas (o ViewModel e as funções de navegação)
 interface ListScreenProps {
   tasks: Task[];
   toggleCompletion: (id: string) => void;
-  // Outras props do navigation stack serão injetadas
 }
 
 export default function ListScreen({ tasks, toggleCompletion }: ListScreenProps) {
   const navigation = useNavigation();
   
-  const renderItem = ({ item }: { item: Task }) => (
-    // Contêiner principal da tarefa. Permite navegação ao tocar em qualquer lugar.
-    <TouchableOpacity
-      style={[styles.taskItem, item.completed && styles.completedTask]}
-      onPress={() => navigation.navigate('TaskDetailsScreen', { taskId: item.id })} // Passa ID para navegação
-    >
-      
-      {/* 1. Checkbox/Botão de Conclusão */}
-      <TouchableOpacity 
-        style={[styles.checkbox, item.completed && styles.checkedCheckbox]}
-        onPress={() => toggleCompletion(item.id)} // Chama a função do ViewModel
-        activeOpacity={0.7}
+  const renderItem = ({ item }: { item: Task }) => {
+    // O valor de item.completed está sendo usado corretamente aqui (booleano)
+    
+    // Retorna o elemento JSX para cada item da FlatList
+    return (
+      // Contêiner principal da tarefa. Permite navegação ao tocar em qualquer lugar.
+      <TouchableOpacity
+        style={[styles.taskItem, item.completed && styles.completedTask]}
+        onPress={() => navigation.navigate('TaskDetailsScreen', { taskId: item.id })} // Passa ID para navegação
       >
-        {item.completed && <Text style={styles.checkmark}>✓</Text>}
-      </TouchableOpacity>
+        
+        {/* 1. Checkbox/Botão de Conclusão */}
+        <TouchableOpacity 
+          style={[styles.checkbox, item.completed && styles.checkedCheckbox]}
+          onPress={() => toggleCompletion(item.id)} // Chama a função do ViewModel
+          activeOpacity={0.7}
+        >
+          {item.completed && <Text style={styles.checkmark}>✓</Text>}
+        </TouchableOpacity>
 
-      {/* 2. Conteúdo da Tarefa */}
-      <View style={styles.textContainer}>
-        <Text style={[styles.taskTitle, item.completed && styles.completedText]}>{item.title}</Text>
-        <Text style={[styles.taskDescription, item.completed && styles.completedText]} numberOfLines={1}>
-          {item.description}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+        {/* 2. Conteúdo da Tarefa */}
+        <View style={styles.textContainer}>
+          <Text style={[styles.taskTitle, item.completed && styles.completedText]}>{item.title}</Text>
+          <Text style={[styles.taskDescription, item.completed && styles.completedText]} numberOfLines={1}>
+            {item.description}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
   
+  // Retorno do componente ListScreen principal
   return (
     <View style={styles.container}>
       <Text style={styles.header}>TO-DO LIST</Text>
