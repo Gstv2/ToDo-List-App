@@ -61,11 +61,13 @@ ToDo-List
 │
 ├── __tests__/           # Pasta para Testes Automatizados
 │   └── TaskListViewModel.test.js # Testes unitários do ViewModel
+|   └── TaskRepositoryMock.js
 │
-├── index.ts
-├── App.json               
+├── .gitignore
+├── index.ts            
 ├── package.json
-└── README.md             # Documentação obrigatória
+├── README.md                      # Documentação obrigatória
+└── tsconfig.json           
 ```
 
 ## Como rodar (desenvolvimento)
